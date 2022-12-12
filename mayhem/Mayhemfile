@@ -1,0 +1,8 @@
+project: CascLib
+target: parse-load
+testsuite:
+    - file://mayhem/testsuite
+cmds:
+  - cmd: /fuzz_casc
+    libfuzzer: true
+    max_length: 14000
