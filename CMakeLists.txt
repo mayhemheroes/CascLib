@@ -74,6 +74,7 @@ set(TEST_SRC_FILES
 add_definitions(-D_7ZIP_ST -DBZ_STRICT_ANSI)
 
 option(CASC_UNICODE "Compile UNICODE version instead of ANSI one (Visual Studio only)" OFF)
+option(CASC_MAYHEM "Compile for Mayhem fuzzing" OFF)
 
 if(WIN32)
     if(MSVC)
@@ -185,3 +186,9 @@ configure_package_config_file("Config.cmake.in"
 
 install(FILES "${PROJECT_CONFIG}" "${VERSION_CONFIG}" DESTINATION "${INSTALL_DIR}")
 install(EXPORT CascLibTargets NAMESPACE CascLib:: DESTINATION "${INSTALL_DIR}")
+
+if (CASC_MAYHEM)
+    add_compile_options(-fsanitize=address,undefined,fuzzer-no-link)
+    add_link_options(-fsanitize=address,undefined)
+    add_subdirectory(mayhem)
+endif()
